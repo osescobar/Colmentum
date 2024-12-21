@@ -1,0 +1,78 @@
+/* General layout */
+#root {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f9; /* Fondo gris claro */
+}
+
+/* Sidebar styling */
+.MuiDrawer-paper {
+  background-color: #2c3e50; /* Color oscuro para la barra lateral */
+}
+
+.MuiListItemText-primary {
+  color: white;
+}
+
+.MuiDrawer-paper .MuiListItem:hover {
+  background-color: #34495e; /* Color al pasar el mouse */
+}
+
+/* Content Area */
+main {
+  flex-grow: 1;
+  background-color: #fff; /* Fondo blanco para el contenido */
+  padding: 20px;
+}
+
+/* Header styling */
+.MuiAppBar-root {
+  background-color: #2980b9; /* Azul para la barra superior */
+}
+
+/* Paper styling for MainContent */
+.MuiPaper-root {
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Typography */
+.MuiTypography-h4 {
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+/* Logo animation (if you have a logo) */
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+/* Card styling */
+.card {
+  padding: 2em;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+  #root {
+    flex-direction: column;
+  }
+
+  main {
+    padding: 1rem;
+  }
+}
