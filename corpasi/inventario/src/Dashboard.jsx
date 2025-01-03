@@ -1,10 +1,18 @@
-import * as React from "react";
+//imports iniciales.
 import PropTypes from "prop-types";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+// globales.
+
+// import * as React { useState } from "react";
+import React, { useState } from "react";
+
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -21,13 +29,21 @@ import DataSaverOnIcon from "@mui/icons-material/DataSaverOn";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import HorizontalSplitIcon from "@mui/icons-material/HorizontalSplit";
-import ViewWeekIcon from "@mui/icons-material/ViewWeek";
-import {
-  Account,
-  AccountPreview,
-  AccountPopoverFooter,
-  SignOutButton,
-} from "@toolpad/core/Account";
+// import ViewWeekIcon from "@mui/icons-material/ViewWeek";
+import QrCodeIcon from "@mui/icons-material/QrCode";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+// import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+// Imports Modulos.
+// import Inicio from "./Models/Model1/Inicio/Inicio";
+import DemoPageAgregar from "./Models/inventario/invAgregar/inv_agregar copy";
+// import {
+//   Account,
+//   AccountPreview,
+//   AccountPopoverFooter,
+//   SignOutButton,
+// } from "@toolpad/core/Account";
 
 const NAVIGATION = [
   { kind: "header", title: "Menu" },
@@ -42,21 +58,21 @@ const NAVIGATION = [
     ],
   },
   { kind: "divider" },
-  { kind: "header", title: "Analisis" },
+  { kind: "header", title: "Análisis" },
   {
     segment: "reportes",
     title: "Reportes",
     icon: <BarChartIcon />,
     children: [
       {
-        segment: "articulos",
-        title: "Artículos",
+        segment: "informacion-material",
+        title: "Información del Material",
         icon: <HorizontalSplitIcon />,
       },
       {
         segment: "generar-codigo",
-        title: "Generar código",
-        icon: <ViewWeekIcon />,
+        title: "Generar Código",
+        icon: <QrCodeIcon />,
       },
     ],
   },
@@ -79,6 +95,22 @@ const demoTheme = createTheme({
 });
 
 function DemoPageContent({ pathname }) {
+  const isAgregarPage = pathname === "/inventario/agregar";
+  const isWithdrawPage = pathname === "/inventario/retirar";
+  const isMaterialInfoPage = pathname === "/reportes/informacion-material";
+  const isGenerateCodePage = pathname === "/reportes/generar-codigo";
+
+  const [isOpen, setIsOpen] = useState(false); // Definir estado isOpen
+
+  const toggleOpen = () => {
+    setIsOpen((prev) => !prev); // Alterna el valor de isOpen
+  };
+  const handleNavClick = (segment) => {
+    if (segment === "agregar") {
+      toggleOpen(); // Si se hace clic en "Agregar", cambia el estado de apertura
+    }
+    console.log(`Navegando a: ${segment}`);
+  };
   return (
     <Box
       sx={{
@@ -89,7 +121,148 @@ function DemoPageContent({ pathname }) {
         textAlign: "center",
       }}
     >
-      <Typography>Dashboard content for {pathname}</Typography>
+      {NAVIGATION.flatMap(item =>
+  item.children?.map(child => (
+    <Button
+      key={child.segment}
+      onClick={() => handleNavClick(child.segment)}
+      variant="outlined"
+      sx={{ margin: "5px" }}
+    >
+      {child.title}
+    </Button>
+  )) || []
+)}
+
+{/* Mostrar el componente de agregar solo si estamos en la página "agregar" */}
+{isAgregarPage && <div>Formulario de Agregar (isOpen: {isOpen ? "Sí" : "No"})</div>}
+      {isAgregarPage && <DemoPageAgregar isOpen={isOpen} />}
+      {isWithdrawPage && (
+        <>
+          <Typography variant="h4" gutterBottom>
+            Retirar Material del Inventario
+          </Typography>
+          <Box
+            component="form"
+            sx={{
+              width: "100%",
+              maxWidth: 600,
+              mt: 2,
+            }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField label="Nombre del material" required fullWidth />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  label="Cantidad a retirar"
+                  type="number"
+                  required
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Motivo del retiro"
+                  multiline
+                  rows={4}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField label="Responsable del retiro" required fullWidth />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  fullWidth
+                >
+                  Registrar Retiro
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </>
+      )}
+      {isMaterialInfoPage && (
+        <>
+          <Typography variant="h4" gutterBottom>
+            Información del Material
+          </Typography>
+          <Box
+            sx={{
+              width: "100%",
+              maxWidth: 600,
+              mt: 2,
+            }}
+          >
+            <TextField
+              label="Buscar Material"
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <IconButton>
+                    <SearchIcon />
+                  </IconButton>
+                ),
+              }}
+              sx={{ mb: 3 }}
+            />
+            <Typography variant="body1">
+              Aquí aparecerá toda la información del material seleccionado.
+            </Typography>
+          </Box>
+        </>
+      )}
+      {isGenerateCodePage && (
+        <>
+          <Typography variant="h4" gutterBottom>
+            Generar Código de Barras o QR
+          </Typography>
+          <Box
+            component="form"
+            sx={{
+              width: "100%",
+              maxWidth: 600,
+              mt: 2,
+            }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField label="Nombre del material" required fullWidth />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="tipo-codigo-label">Tipo de Código</InputLabel>
+                  <Select
+                    labelId="tipo-codigo-label"
+                    id="tipo-codigo"
+                    required
+                    defaultValue=""
+                    label="Tipo de Código"
+                  >
+                    <MenuItem value="Barras">Código de Barras</MenuItem>
+                    <MenuItem value="QR">Código QR</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  fullWidth
+                >
+                  Generar Código
+                </Button>
+              </Grid>
+            </Grid>
+          </Box>
+        </>
+      )}
     </Box>
   );
 }

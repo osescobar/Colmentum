@@ -1,11 +1,16 @@
-import React from "react";
-import DashboardLayoutBasic from "./Dashboard";
+// import React from 'react';
+// import { BrowserRouter as Router, Route } from 'react-router-dom';
+import DashboardLayoutBasic from './Dashboard';
+// import DemoPageAgregar from './Models/inventario/invAgregar/inv_agregar'; // Asegúrate de que la ruta sea correcta
 
 function App() {
   return (
-    <div>
-      <DashboardLayoutBasic />
-    </div>
+    <DashboardLayoutBasic />
+
+    // <Router>
+    //   <DashboardLayoutBasic />
+    //     <Route path="/agregar" component={DemoPageAgregar} /> Ruta para la página de agregar material
+    // </Router>
   );
 }
 
